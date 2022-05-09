@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM alpine:3.13.10
+FROM alpine:3.15.4
 
 RUN apk add --update iptables && \
     rm -rf /var/cache/apk/*
