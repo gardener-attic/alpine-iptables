@@ -1,0 +1,37 @@
+alpine-iptables:
+  template: 'default'
+  base_definition:
+    repo: ~
+    traits:
+      version:
+        preprocess:
+          'inject-commit-hash'
+      publish:
+        dockerimages:
+          alpine-iptables:
+            registry: 'gcr-readwrite'
+            image: 'eu.gcr.io/gardener-project/gardener/alpine-iptables'
+            dockerfile: 'alpine/Dockerfile'
+    steps: ~
+  jobs:
+    head-update:
+      traits:
+        draft_release: ~
+        component_descriptor: ~
+    pull-request:
+      traits:
+        pull-request: ~
+    release:
+      traits:
+        version:
+          preprocess: 'finalize'
+        release:
+          nextversion: 'bump_minor'
+        slack:
+          default_channel: 'internal_scp_workspace'
+          channel_cfgs:
+            internal_scp_workspace:
+              channel_name: 'C9CEBQPGE' #sap-tech-gardener
+              slack_cfg_name: 'scp_workspace'
+        component_descriptor:
+          component_name: 'github.com/gardener/alpine-iptables'
